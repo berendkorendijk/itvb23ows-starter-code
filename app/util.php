@@ -4,6 +4,7 @@ $GLOBALS['OFFSETS'] = [[0, 1], [0, -1], [1, 0], [-1, 0], [-1, 1], [1, -1]];
 
 function isNeighbour($a, $b)
 {
+    // checks if the tile is a neighbour 
     $a = explode(',', $a);
     $b = explode(',', $b);
     if ($a[0] == $b[0] && abs($a[1] - $b[1]) == 1) return true;
@@ -14,6 +15,7 @@ function isNeighbour($a, $b)
 
 function hasNeighBour($a, $board)
 {
+    //checks is the tile has a neighbour
     foreach (array_keys($board) as $b) {
         if (isNeighbour($a, $b)) return true;
     }
@@ -21,6 +23,7 @@ function hasNeighBour($a, $board)
 
 function neighboursAreSameColor($player, $a, $board)
 {
+    // Checks if the neighbouring tile is the same color
     foreach ($board as $b => $st) {
         if (!$st) continue;
         $c = $st[count($st) - 1][0];
@@ -31,22 +34,30 @@ function neighboursAreSameColor($player, $a, $board)
 
 function len($tile)
 {
+    // Checks if a tile is empty.
     return $tile ? count($tile) : 0;
 }
 
 function slide($board, $from, $to)
 {
+    // Checks if the position you want to move to has a neighbour, if so return false
     if (!hasNeighBour($to, $board)) return false;
+
+    // Checks if there is not a neighbour near the position you want to move to
     if (!isNeighbour($from, $to)) return false;
     $b = explode(',', $to);
     $common = [];
+
+    // Checks for each position in [0, 1], [0, -1], [1, 0], [-1, 0], [-1, 1], [1, -1] as pq. 
     foreach ($GLOBALS['OFFSETS'] as $pq) {
         $p = $b[0] + $pq[0];
         $q = $b[1] + $pq[1];
         if (isNeighbour($from, $p . "," . $q)) $common[] = $p . "," . $q;
     }
-    if (!$board[$common[0]] && !$board[$common[1]] && !$board[$from] && !$board[$to]) return false;
-    return min(len($board[$common[0]]), len($board[$common[1]])) <= max(len($board[$from]), len($board[$to]));
+    if (!array_key_exists($common[0], $board) || !array_key_exists($common[1], $board)) {
+        return true;
+    }
+    return false;
 }
 
 function AvailablePosition($board, $hand, $player, $to){

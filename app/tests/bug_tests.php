@@ -5,7 +5,7 @@ require_once 'app/util.php';
 
 class bug_tests extends TestCase
 {
-    public function testIsValidMove()
+    public function testAvailablePosition()
     {
         // Tests for dropdown bug
         $board = ["0,0"=>[[0,"Q"]],"0,1"=>[[1,"Q"]],"0,-1"=>[[0,"B"]]];
