@@ -50,4 +50,29 @@ class TestTiles extends TestCase{
         ];
         $this->assertFalse(Grasshopper('-1,0', '0,3', $board));
     }
+
+    public function testSoldierAntMoveToOppositPositionReturnsTrue()
+    {
+        $board = [
+            "0,0" => [[0, "A"]],
+            "0,1" => [[1, "Q" ]],
+            "0,-1" => [[0, "Q" ]],
+            "0,2" => [[1, "B" ]],
+            "0,-2" => [[0, "A"]]
+        ];
+
+        $this->assertTrue(SoldierAnt('0,-2', '-1,3', $board));
+    }
+    public function testSoldierAntMoveToNextRightPositionReturnsTrue()
+    {
+        $board = [
+            "0,0" => [[0, "A"]],
+            "0,1" => [[1, "Q" ]],
+            "0,-1" => [[0, "Q" ]],
+            "0,2" => [[1, "B" ]],
+            "0,-2" => [[0, "A"]]
+        ];
+
+        $this->assertTrue(SoldierAnt('0,-2', '0,2', $board));
+    }    
 }

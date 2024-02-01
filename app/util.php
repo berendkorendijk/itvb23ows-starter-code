@@ -128,3 +128,46 @@ function Grasshopper($from, $to, $board){
     }
     $_SESSION['error'] = 'Tile must move';
 }
+
+function SoldierAnt($from, $to, $board){
+    // Regels voor soldier ant
+    //a. Een soldatenmier verplaatst zich door een onbeperkt aantal keren te verschuiven
+    // b. Een verschuiving is een zet zoals de bijenkoningin die mag maken.
+    // c. Een soldatenmier mag zich niet verplaatsen naar het veld waar hij al staat.
+    // d. Een soldatenmier mag alleen verplaatst worden over en naar lege velden.
+    
+    $visited = [];
+    $todo = array($from);
+
+    //move aanpassen zodat soldierants en andere tiles onbeperkt kunnen bewegen
+    // Slide mechanic gebruiken 
+
+    if(MoveToCurrentPos($from, $to)== false){
+        while(!empty($todo)){
+        $currentTile = array_shift($todo);
+
+        if(!in_array($currentTile, $visited)){
+            $visited[] = $currentTile;
+        }
+        if ($currentTile == $to) {
+            return true;
+        }
+        $antDestination = explode(',', $currentTile);
+        
+        foreach($GLOBALS['OFFSETS'] as $pq){
+        $p = $antDestination[0] + $pq[0];
+        $q = $antDestination[1] + $pq[1];
+        $pos = $p . "," . $q;
+        
+        if(!isset($board[$pos]) && !isset($visited[$pos]) && hasNeighbour($pos, $board)){
+            //if($pos == $to){
+             //   return true;
+            //}
+            $todo[] = $pos;
+        }
+        }
+    }
+}
+$_SESSION['error'] = 'Tile must move';
+return true;
+}
