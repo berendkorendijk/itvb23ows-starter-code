@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 require_once 'app/util.php';
+require_once 'app/undo.php';
 
 class bug_tests extends TestCase
 {
@@ -17,4 +18,12 @@ class bug_tests extends TestCase
         $this->assertEquals(true, AvailablePosition($board, $hand[$player],$player, $to[1]));
         $this->assertEquals(false, AvailablePosition($board, $hand[$player],$player, $to[2]));
     }
+
+    public function UndoFirstTry(){
+        session_start();
+        unset($_SESSION["last_move"]);
+
+        $this->assertSame("You must play first", $_SESSION['error']);
+    }
+
 }
