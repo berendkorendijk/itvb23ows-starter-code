@@ -7,18 +7,15 @@ pipeline{
             }
         }
         stage('PHPUnit tests') {
-            agent{
-                docker{
-                    image 'composer:lts'
-                }
-            }
             steps {
                 script {
+                    docker.image('composer:lts').inside {
                         sh 'composer install'
                         sh 'vendor/bin/phpunit app/.'
                     }
                 }    
             }   
+        }
         stage('SonarQube') {
             steps {
                 script { scannerHome = tool 'SonarQube Scanner' }
