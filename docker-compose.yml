@@ -45,11 +45,11 @@ services:
         - sonarqube_data:/opt/sonarqube/data
 
     #AI container
-   #app-ai:
-      #build:
-        #context: /hive-ai
-      #ports:
-       # - "5000:5000"
+    app-ai:
+      build:
+        context: /hive-ai
+      ports:
+        - "5000:5000"
       
 
 networks:
