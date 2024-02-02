@@ -6,16 +6,37 @@ pipeline{
                 checkout scm
             }
         }
-        stage('PHPUnit tests') {
+
+       stage('Start Docker containers') {
             steps {
                 script {
-                    docker.image('composer:lts').inside {
-                        sh 'composer install'
-                        sh 'vendor/bin/phpunit app/.'
-                    }
-                }    
-            }   
+                    sh 'docker-compose up -d'
+                }
+            }
         }
+        
+        stage('Install dependencies') {
+            steps {
+                sh 'docker-compose exec app composer install'
+            }
+        }
+        
+        stage('Run PHPUnit tests') {
+            steps {
+                script {
+                    sh 'docker-compose exec app vendor/bin/phpunit app/.'
+                }
+            }
+        }
+
+        stage('Stop Docker containers') {
+            steps {
+                script {
+                    sh 'docker-compose down'
+                }
+            }
+        }
+        
         stage('SonarQube') {
             steps {
                 script { scannerHome = tool 'SonarQube Scanner' }
