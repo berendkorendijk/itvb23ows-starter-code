@@ -7,36 +7,20 @@ pipeline{
             }
         }
 
-       stage('Start Docker containers') {
-            steps {
-                script {
-                    sh 'docker-compose up -d'
-                }
-            }
-        }
-        
         stage('Install dependencies') {
             steps {
-                sh 'docker-compose exec app composer install'
+                sh 'composer install'
             }
         }
         
         stage('Run PHPUnit tests') {
             steps {
                 script {
-                    sh 'docker-compose exec app vendor/bin/phpunit app/.'
+                    sh 'vendor/bin/phpunit app/.'
                 }
             }
         }
 
-        stage('Stop Docker containers') {
-            steps {
-                script {
-                    sh 'docker-compose down'
-                }
-            }
-        }
-        
         stage('SonarQube') {
             steps {
                 script { scannerHome = tool 'SonarQube Scanner' }
