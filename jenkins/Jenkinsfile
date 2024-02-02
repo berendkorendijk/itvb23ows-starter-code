@@ -14,17 +14,13 @@ pipeline{
                 }
             }
         }
-        stage('Quality Gates'){
-            steps{
-                script{
-                timeout(time: 1, unit: 'HOURS') {
-                    def qg = waitForQualityGate() 
-                if (qg.status != 'OK') {
-                    error "Pipeline aborted due to quality gate failure: ${qg.status}"
+        stage('PHPUnit tests') {
+            steps {
+                script {
+                    docker.image('composer:lts').inside {
+                        sh 'composer install'
+                        sh 'vendor/bin/phpunit app/.'
                     }
-                }
-                }
-             }
-        }
+                }    
     }   
 }
