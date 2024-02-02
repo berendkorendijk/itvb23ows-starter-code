@@ -1,0 +1,1 @@
+{"version":1,"defects":{"bug_tests::testIsValidMove":7,"bug_tests::testUndo":8},"times":{"bug_tests::testIsValidMove":0.01,"TestTiles::testGrasshopperHorizontalMove":0.391,"TestTiles::testDiagonalMove":0,"TestTiles::testGrasshopperMoveSamePosition":0,"TestTiles::testInvalidMove":0.019,"bug_tests::testAvailablePosition":0.009,"bug_tests::testUndo":0.463}}
