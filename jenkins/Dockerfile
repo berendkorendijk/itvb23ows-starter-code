@@ -2,7 +2,18 @@ FROM jenkins/jenkins:latest
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN  jenkins-plugin-cli -f /usr/share/jenkins/ref/plugins.txt
-
-# Install docker-compose and add jenkins user to docker group
 USER root
-RUN apt-get update && apt-get install -y docker-compose=1.29.2-3
+
+RUN apt-get update \
+    && apt-get install -y php-cli php-xml \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Switch back to the Jenkins user
+USER jenkins
+
+# Install Composer globally
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Set the PATH variable to include Composer's bin directory
+ENV PATH="/usr/local/bin/composer/vendor/bin:${PATH}"
