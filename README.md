@@ -23,6 +23,11 @@ and comments can be directed to
 [Ralf van den Broek](https://github.com/ralfvandenbroek).
 
 
+Before Starting the application run the following command:
+```
+git submodule update --init
+```
+
 Starting the application:
 This command will build and start the Docker container
 ```
